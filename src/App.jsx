@@ -101,12 +101,12 @@ function App() {
           </div>
         )}
 
-        {weather && !loading && (
-          <div className="space-y-8 animate-fadeIn">
-            <WeatherCard current={weather.current} />
-            <Forecast forecast={weather.forecast} />
-          </div>
-        )}
+       {weather && !loading && (
+  <div className="space-y-8 animate-fadeIn">
+    <WeatherCard current={weather.current} />
+    <Forecast forecastList={weather.rawForecastList || weather.forecast} />
+  </div>
+)}
       </div>
     </div>
   );

@@ -21,10 +21,11 @@ export const getWeatherData = async (city) => {
       item.dt_txt.includes("12:00:00")
     );
 
-    return {
-      current: currentData,
-      forecast: dailyForecast,
-    };
+   return {
+  current: currentData,
+  forecast: dailyForecast,
+  rawForecastList: forecastData.list // <-- Agregamos esta línea mágica también
+};
   } catch (error) {
     console.error("Error en la API:", error);
     throw error;
@@ -49,9 +50,10 @@ export const getWeatherDataByCoords = async (lat, lon) => {
     );
 
     return {
-      current: currentData,
-      forecast: dailyForecast,
-    };
+  current: currentData,
+  forecast: dailyForecast,
+  rawForecastList: forecastData.list // <-- Agregamos esta línea mágica también
+};
   } catch (error) {
     console.error("Error en geolocalización:", error);
     throw error;
