@@ -7,3 +7,13 @@ body {
   transition: background-image 0.5s ease-in-out;
   background-color: #0f172a;
 }
+/* Esconder barra de scroll para Chrome, Safari y Opera */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Esconder barra de scroll para Firefox y Edge */
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE y Edge */
+  scrollbar-width: none;  /* Firefox */
+}

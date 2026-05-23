@@ -71,10 +71,10 @@ function App() {
     className="w-full min-h-screen bg-cover bg-center flex items-center justify-center p-0 sm:p-4 select-none transition-all duration-700 ease-in-out"
     style={{ backgroundImage: `url('${bgImage}')` }}
   >
-    {/* Contenedor tipo App: En celu clava el alto máximo y si el contenido es largo scrollea ADENTRO de la caja */}
-    <div className="w-full h-screen max-h-screen sm:h-auto sm:max-h-[90vh] sm:max-w-md bg-slate-950/50 backdrop-blur-xl border-0 sm:border border-white/10 sm:rounded-3xl p-4 sm:p-5 shadow-2xl flex flex-col justify-start overflow-y-auto overflow-x-hidden">
+    {/* Contenedor tipo App con scrollbar-none para limpiar la barra gris */}
+    <div className="w-full h-screen max-h-screen sm:h-auto sm:max-h-[90vh] sm:max-w-md bg-slate-950/20 backdrop-blur-md border-0 sm:border border-white/10 sm:rounded-3xl p-4 sm:p-5 shadow-2xl flex flex-col justify-start overflow-y-auto overflow-x-hidden scrollbar-none">
       
-      {/* Encabezado Compacto */}
+      {/* Todo el resto de tu código de encabezado, Search, WeatherCard, etc., sigue igual acá abajo... */}
       <header className="mb-3 flex justify-between items-center gap-2 mt-1">
         <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white drop-shadow-md">
           MatyCar Weather <span className="text-cyan-400 font-light text-sm">Pro</span>
@@ -87,10 +87,8 @@ function App() {
         </button>
       </header>
 
-      {/* Buscador */}
       <Search onSearch={handleSearch} />
 
-      {/* Pantalla de carga */}
       {loading && (
         <div className="text-center my-auto py-8">
           <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-cyan-400 mx-auto mb-3"></div>
@@ -98,14 +96,12 @@ function App() {
         </div>
       )}
 
-      {/* Mensaje de Error */}
       {error && (
         <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/50 text-red-200 p-3 rounded-xl text-center my-2 text-xs font-medium">
           ⚠️ {error}
         </div>
       )}
 
-      {/* Datos del Clima */}
       {weather && !loading && (
         <div className="space-y-4 animate-fadeIn flex-1">
           <WeatherCard current={weather.current} />
