@@ -66,50 +66,55 @@ function App() {
     handleLocation(); // Arranca buscando la ubicación actual del usuario
   }, []);
 
-  return (
-    <div 
-      className="min-h-screen w-full bg-cover bg-center flex flex-col items-center justify-start p-4 sm:p-8"
-      style={{ backgroundImage: `url('${bgImage}')` }}
-    >
-      {/* Contenedor principal con efecto Blur Vidrio */}
-      <div className="w-full max-w-4xl bg-slate-900/40 backdrop-blur-md border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl mt-4">
-        
-        <header className="mb-8 text-center flex flex-col sm:flex-row justify-between items-center gap-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
-            MatyCar Weather <span className="text-cyan-400 font-light">Pro</span>
-          </h1>
-          <button 
-            onClick={handleLocation}
-            className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 transition duration-300 shadow-lg shadow-cyan-500/20 active:scale-95 text-sm"
-          >
-            📍 Mi Ubicación
-          </button>
-        </header>
+ return (
+  <div 
+    className="w-full min-h-screen bg-cover bg-center flex items-center justify-center p-0 sm:p-4 md:p-8 select-none"
+    style={{ backgroundImage: `url('${bgImage}')` }}
+  >
+    {/* Contenedor Rectángulo Tipo App Real */}
+    <div className="w-full h-screen sm:h-auto sm:max-w-md md:max-w-2xl lg:max-w-4xl bg-slate-900/40 backdrop-blur-xl border-0 sm:border border-white/10 sm:rounded-3xl p-5 shadow-2xl flex flex-col justify-start overflow-y-auto scrollbar-none">
+      
+      {/* Encabezado Compacto */}
+      <header className="mb-4 flex justify-between items-center gap-2 mt-2">
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white drop-shadow-md">
+          MatyCar Weather <span className="text-cyan-400 font-light text-base sm:text-xl">Pro</span>
+        </h1>
+        <button 
+          onClick={handleLocation}
+          className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold p-2 sm:py-2 sm:px-4 rounded-xl flex items-center gap-2 transition duration-300 shadow-lg shadow-cyan-500/20 active:scale-95 text-xs sm:text-sm"
+        >
+          📍 <span className="hidden sm:inline">Mi Ubicación</span>
+        </button>
+      </header>
 
-        <Search onSearch={handleSearch} />
+      {/* Buscador */}
+      <Search onSearch={handleSearch} />
 
-        {loading && (
-          <div className="text-center my-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-cyan-400 mx-auto mb-4"></div>
-            <p className="text-white font-medium animate-pulse">Obteniendo el radar...</p>
-          </div>
-        )}
+      {/* Pantalla de carga */}
+      {loading && (
+        <div className="text-center my-auto">
+          <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-cyan-400 mx-auto mb-3"></div>
+          <p className="text-white text-sm font-medium animate-pulse">Sintonizando satélites...</p>
+        </div>
+      )}
 
-        {error && (
-          <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/50 text-red-200 p-4 rounded-2xl text-center my-6 font-medium">
-            ⚠️ {error}
-          </div>
-        )}
+      {/* Mensaje de Error */}
+      {error && (
+        <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/50 text-red-200 p-3 rounded-xl text-center my-4 text-xs sm:text-sm font-medium">
+          ⚠️ {error}
+        </div>
+      )}
 
-       {weather && !loading && (
-  <div className="space-y-8 animate-fadeIn">
-    <WeatherCard current={weather.current} />
-    <Forecast forecastList={weather.rawForecastList || weather.forecast} />
-  </div>
-)}
-      </div>
+      {/* Datos del Clima */}
+      {weather && !loading && (
+        <div className="space-y-4 animate-fadeIn flex-1">
+          <WeatherCard current={weather.current} />
+          <Forecast forecastList={weather.rawForecastList || weather.forecast} />
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
 }
 
 export default App;
