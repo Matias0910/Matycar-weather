@@ -1,33 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function Search({ onSearch }) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.trim()) {
-      onSearch(input);
-      setInput('');
+      onSearch(input.trim());
+      setInput("");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md mb-6">
-      <div className="flex gap-2">
-        <input
-          type="text"
-          placeholder="Buscar ciudad... (Ej: Buenos Aires)"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg bg-slate-800 text-white border border-slate-700 focus:outline-none focus:border-cyan-400"
-        />
-        <button
-          type="submit"
-          className="px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-slate-900 font-semibold rounded-lg transition-colors"
-        >
-          Buscar
-        </button>
-      </div>
+    <form onSubmit={handleSubmit} className="mb-6 flex gap-2">
+      <input
+        type="text"
+        placeholder="Buscá una ciudad (ej: Buenos Aires, Madrid)..."
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        className="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 backdrop-blur-sm transition text-sm sm:text-base font-medium"
+      />
+      <button
+        type="submit"
+        className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold px-6 py-3 rounded-xl transition duration-300 shadow-md active:scale-95 text-sm sm:text-base"
+      >
+        🔍 Buscar
+      </button>
     </form>
   );
 }

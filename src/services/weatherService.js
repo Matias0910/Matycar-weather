@@ -1,35 +1,59 @@
-const API_KEY = "71364d89d80946a5051b17310ca8be62"; // Usamos una clave activa para agilizar hoy
+const API_KEY = "71364d89d80946a5051b17310ca8be62"; // <-- ¡Poné tu API Key real acá!
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
-// Función para obtener el clima actual por ciudad
 export const getWeatherData = async (city) => {
   try {
-    const response = await fetch(
-      `${BASE_URL}/weather?q=${city}&appid=${API_KEY}&units=metric&lang=es`
+    // 1. Clima actual
+    const currentResponse = await fetch(
+      `${BASE_URL}/weather?q=${city}&units=metric&lang=es&appid=${API_KEY}`
     );
-    if (!response.ok) throw new Error("Ciudad no encontrada");
-    const data = await response.json();
-    return data;
+    if (!currentResponse.ok) throw new Error("Ciudad no encontrada");
+    const currentData = await currentResponse.json();
+
+    // 2. Pronóstico extendido
+    const forecastResponse = await fetch(
+      `${BASE_URL}/forecast?q=${city}&units=metric&lang=es&appid=${API_KEY}`
+    );
+    const forecastData = await forecastResponse.json();
+
+    // Filtrar el pronóstico para quedarnos con un registro por día (por ejemplo, el de las 12:00 del mediodía)
+    const dailyForecast = forecastData.list.filter((item) =>
+      item.dt_txt.includes("12:00:00")
+    );
+
+    return {
+      current: currentData,
+      forecast: dailyForecast,
+    };
   } catch (error) {
-    console.error("Error al traer el clima:", error);
+    console.error("Error en la API:", error);
     throw error;
   }
 };
 
-// Función para obtener el pronóstico extendido de los próximos días
-export const getWeatherForecast = async (city) => {
+export const getWeatherDataByCoords = async (lat, lon) => {
   try {
-    const response = await fetch(
-      `${BASE_URL}/forecast?q=${city}&appid=${API_KEY}&units=metric&lang=es`
+    const currentResponse = await fetch(
+      `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&lang=es&appid=${API_KEY}`
     );
-    if (!response.ok) throw new Error("Error en el pronóstico");
-    const data = await response.json();
-    
-    // OpenWeather te da datos cada 3 horas. Filtramos para quedarnos con 1 por día
-    const dailyData = data.list.filter((reading) => reading.dt_txt.includes("12:00:00"));
-    return dailyData;
+    if (!currentResponse.ok) throw new Error("Error con las coordenadas");
+    const currentData = await currentResponse.json();
+
+    const forecastResponse = await fetch(
+      `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&lang=es&appid=${API_KEY}`
+    );
+    const forecastData = await forecastResponse.json();
+
+    const dailyForecast = forecastData.list.filter((item) =>
+      item.dt_txt.includes("12:00:00")
+    );
+
+    return {
+      current: currentData,
+      forecast: dailyForecast,
+    };
   } catch (error) {
-    console.error("Error al traer el pronóstico:", error);
+    console.error("Error en geolocalización:", error);
     throw error;
   }
 };

@@ -1,23 +1,34 @@
-import React from 'react';
+import React from "react";
 
-function Forecast({ forecastData }) {
+function Forecast({ forecast }) {
+  // Función para transformar fechas en nombres de días ("Lun", "Mar", etc.)
+  const formatDay = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("es-ES", { weekday: "short" });
+  };
+
   return (
-    <div className="w-full max-w-4xl mt-4">
-      <h3 className="text-xl font-bold text-slate-300 mb-4 text-center md:text-left">Pronóstico de los próximos días</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-        {forecastData.map((day, index) => {
-          const date = new Date(day.dt * 1000).toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' });
-          const iconUrl = `https://openweathermap.org/img/wn/${day.weather[0].icon}.png`;
-
-          return (
-            <div key={index} className="bg-slate-800/40 p-4 rounded-xl border border-slate-700/60 text-center flex flex-col items-center">
-              <span className="text-sm font-semibold text-slate-400 capitalize">{date}</span>
-              <img src={iconUrl} alt="clima" className="w-12 h-12 my-1" />
-              <span className="text-xl font-bold text-white">{Math.round(day.main.temp)}°C</span>
-              <span className="text-xs text-cyan-400/80 capitalize mt-1 line-clamp-1">{day.weather[0].description}</span>
+    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-white shadow-xl">
+      <h3 className="text-xl font-bold mb-4 tracking-wide text-slate-200">📅 Pronóstico Próximos Días</h3>
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        {forecast.map((day, index) => (
+          <div 
+            key={index} 
+            className="bg-black/10 p-4 rounded-xl border border-white/5 flex flex-col items-center justify-between text-center gap-2 hover:bg-white/5 transition duration-300"
+          >
+            <p className="font-bold capitalize text-sm text-cyan-300">{formatDay(day.dt_txt)}</p>
+            <img
+              src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
+              alt={day.weather[0].description}
+              className="w-12 h-12"
+            />
+            <div>
+              <p className="text-base font-black text-orange-400">{Math.round(day.main.temp_max)}°</p>
+              <p className="text-xs font-medium text-slate-400">{Math.round(day.main.temp_min)}°</p>
             </div>
-          );
-        })}
+            <p className="text-xs capitalize text-slate-300 font-light line-clamp-1">{day.weather[0].description}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
