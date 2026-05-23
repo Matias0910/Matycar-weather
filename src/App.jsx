@@ -68,22 +68,22 @@ function App() {
 
  return (
   <div 
-    className="w-full min-h-screen bg-cover bg-center flex items-center justify-center p-0 sm:p-4 md:p-8 select-none"
-    style={{ backgroundImage: `url('${bgImage}')` }}
+    className="w-full min-h-screen bg-cover bg-center flex items-center justify-center p-0 sm:p-4 md:p-8 select-none transition-all duration-700 ease-in-out"
+    style={{ backgroundImage: `url('${bgImage}')` }} // <-- ¡Acá vuelve la magia del fondo dinámico!
   >
-    {/* Contenedor Rectángulo Tipo App Real */}
-    <div className="w-full h-screen sm:h-auto sm:max-w-md md:max-w-2xl lg:max-w-4xl bg-slate-900/40 backdrop-blur-xl border-0 sm:border border-white/10 sm:rounded-3xl p-5 shadow-2xl flex flex-col justify-start overflow-y-auto scrollbar-none">
+    {/* Contenedor Rectángulo Tipo App Real con súper blur para que resalte el fondo */}
+    <div className="w-full h-screen sm:h-[85vh] sm:max-w-md bg-slate-950/40 backdrop-blur-xl border-0 sm:border border-white/10 sm:rounded-3xl p-5 shadow-2xl flex flex-col justify-start overflow-y-auto scrollbar-none">
       
       {/* Encabezado Compacto */}
       <header className="mb-4 flex justify-between items-center gap-2 mt-2">
-        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white drop-shadow-md">
-          MatyCar Weather <span className="text-cyan-400 font-light text-base sm:text-xl">Pro</span>
+        <h1 className="text-2xl font-black tracking-tight text-white drop-shadow-md">
+          MatyCar Weather <span className="text-cyan-400 font-light text-base">Pro</span>
         </h1>
         <button 
           onClick={handleLocation}
-          className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold p-2 sm:py-2 sm:px-4 rounded-xl flex items-center gap-2 transition duration-300 shadow-lg shadow-cyan-500/20 active:scale-95 text-xs sm:text-sm"
+          className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold p-2 rounded-xl flex items-center gap-2 transition duration-300 shadow-lg shadow-cyan-500/20 active:scale-95 text-xs"
         >
-          📍 <span className="hidden sm:inline">Mi Ubicación</span>
+          📍 Mi Ubicación
         </button>
       </header>
 
@@ -94,13 +94,13 @@ function App() {
       {loading && (
         <div className="text-center my-auto">
           <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-cyan-400 mx-auto mb-3"></div>
-          <p className="text-white text-sm font-medium animate-pulse">Sintonizando satélites...</p>
+          <p className="text-white text-sm font-medium animate-pulse">Conectando con el satélite...</p>
         </div>
       )}
 
       {/* Mensaje de Error */}
       {error && (
-        <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/50 text-red-200 p-3 rounded-xl text-center my-4 text-xs sm:text-sm font-medium">
+        <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/50 text-red-200 p-3 rounded-xl text-center my-4 text-xs font-medium">
           ⚠️ {error}
         </div>
       )}
