@@ -1,12 +1,24 @@
-const API_KEY = "71364d89d80946a5051b17310ca8be62"; // <-- ¡Poné tu API Key real acá!
+// En una app profesional, usa variables de entorno. 
+// Para Vite, crea un archivo .env y usa VITE_WEATHER_API_KEY
+const API_KEY = import.meta.env.VITE_WEATHER_API_KEY; // Asegúrate de que esta variable esté definida en tu .env
+
+if (!API_KEY) {
+  console.error("❌ Error: VITE_WEATHER_API_KEY no está definida. Revisa tu archivo .env y reinicia el servidor con 'npm run dev'.");
+}
+
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 export const getWeatherData = async (city) => {
   try {
+    if (!API_KEY) {
+      throw new Error("Configuración incompleta: VITE_WEATHER_API_KEY no encontrada en .env");
+    }
+
     // 1. Clima actual
     const currentResponse = await fetch(
       `${BASE_URL}/weather?q=${city}&units=metric&lang=es&appid=${API_KEY}`
     );
+    if (currentResponse.status === 401) throw new Error("API Key no válida o no configurada en .env");
     if (!currentResponse.ok) throw new Error("Ciudad no encontrada");
     const currentData = await currentResponse.json();
 
@@ -34,9 +46,14 @@ export const getWeatherData = async (city) => {
 
 export const getWeatherDataByCoords = async (lat, lon) => {
   try {
+    if (!API_KEY) {
+      throw new Error("Configuración incompleta: VITE_WEATHER_API_KEY no encontrada en .env");
+    }
+
     const currentResponse = await fetch(
       `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&lang=es&appid=${API_KEY}`
     );
+    if (currentResponse.status === 401) throw new Error("API Key no válida o no configurada en .env");
     if (!currentResponse.ok) throw new Error("Error con las coordenadas");
     const currentData = await currentResponse.json();
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Search from "./components/Search";
 import WeatherCard from "./components/WeatherCard";
 import Forecast from "./components/Forecast";
+import Mascota from "./components/Mascota";
 import { getWeatherData, getWeatherDataByCoords } from "./services/weatherService";
 
 function App() {
@@ -9,18 +10,32 @@ function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [bgImage, setBgImage] = useState("https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1920&q=80"); // Fondo por defecto
+  const [unit, setUnit] = useState("metric"); // 'metric' para °C, 'imperial' para °F
 
   // Mapeo de fondos según el clima de OpenWeather
-  const updateBackground = (mainCondition) => {
+  const updateBackground = (mainCondition, dt, sunrise, sunset) => {
+    const isNight = dt && sunrise && sunset ? (dt < sunrise || dt > sunset) : false;
+
     const backgrounds = {
-      Clear: "https://images.unsplash.com/photo-1601297183305-6df142704ea2?auto=format&fit=crop&w=1920&q=80", // Soleado / Despejado
-      Clouds: "https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=1920&q=80", // Nublado
+      Clear: isNight 
+        ? "https://images.unsplash.com/photo-1532973334994-66f6c5e229c1?auto=format&fit=crop&w=1920&q=80" 
+        : "https://images.unsplash.com/photo-1601297183305-6df142704ea2?auto=format&fit=crop&w=1920&q=80",
+      Clouds: isNight
+        ? "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?auto=format&fit=crop&w=1920&q=80"
+        : "https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=1920&q=80",
       Rain: "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?auto=format&fit=crop&w=1920&q=80", // Lluvia
       Drizzle: "https://images.unsplash.com/photo-1556485689-33e55ab56127?auto=format&fit=crop&w=1920&q=80", // Llovizna
       Thunderstorm: "https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?auto=format&fit=crop&w=1920&q=80", // Tormenta
       Snow: "https://images.unsplash.com/photo-1491002052546-bf38f186af56?auto=format&fit=crop&w=1920&q=80", // Nieve
     };
+
     setBgImage(backgrounds[mainCondition] || "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1920&q=80");
+  };
+
+  // Convertir temperatura según la unidad seleccionada
+  const convertTemp = (temp) => {
+    if (unit === "metric") return Math.round(temp);
+    return Math.round((temp * 9/5) + 32);
   };
 
   const handleSearch = async (city) => {
@@ -29,7 +44,8 @@ function App() {
     try {
       const data = await getWeatherData(city);
       setWeather(data);
-      updateBackground(data.current.weather[0].main);
+      updateBackground(data.current.weather[0].main, data.current.dt, data.current.sys.sunrise, data.current.sys.sunset);
+      localStorage.setItem("lastCity", city); // Guardamos la ciudad
     } catch (err) {
       setError("No se pudo encontrar la ciudad. ¡Probá de nuevo!");
     } finally {
@@ -47,7 +63,8 @@ function App() {
             const { latitude, longitude } = position.coords;
             const data = await getWeatherDataByCoords(latitude, longitude);
             setWeather(data);
-            updateBackground(data.current.weather[0].main);
+            updateBackground(data.current.weather[0].main, data.current.dt, data.current.sys.sunrise, data.current.sys.sunset);
+            if (data.current.name) localStorage.setItem("lastCity", data.current.name);
           } catch (err) {
             setError("Error al obtener el clima de tu ubicación.");
           } finally {
@@ -55,11 +72,38 @@ function App() {
           }
         },
         () => {
-          setError("Permiso de ubicación denegado. Buscá manualmente.");
+          // Si falla GPS, intentamos cargar lo último guardado
+          const savedCity = localStorage.getItem("lastCity");
+          if (savedCity) {
+            handleSearch(savedCity);
+          } else {
+            setError("Permiso de ubicación denegado. Buscá manualmente.");
+          }
           setLoading(false);
         }
       );
     }
+  };
+
+  // Componente de Atmósfera Animada
+  const WeatherAtmosphere = () => {
+    if (!weather) return null;
+    const condition = weather.current.weather[0].main;
+    
+    if (condition === "Rain" || condition === "Drizzle") {
+      return [...Array(20)].map((_, i) => (
+        <div key={i} className="rain-drop" style={{ left: `${Math.random() * 100}%`, animationDuration: `${0.5 + Math.random()}s`, opacity: Math.random() }} />
+      ));
+    }
+    if (condition === "Clouds") {
+      return [...Array(5)].map((_, i) => (
+        <div key={i} className="cloud-mist" style={{ top: `${i * 20}%`, width: '300px', height: '150px', animationDuration: `${40 + Math.random() * 40}s`, animationDelay: `${i * -10}s` }} />
+      ));
+    }
+    if (condition === "Clear") {
+      return <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,220,100,0.15),transparent_50%)] animate-pulse" />;
+    }
+    return null;
   };
 
   useEffect(() => {
@@ -67,48 +111,68 @@ function App() {
   }, []);
 
  return (
-  <div 
-    className="w-full min-h-screen bg-cover bg-center flex items-center justify-center p-0 sm:p-4 select-none transition-all duration-700 ease-in-out"
-    style={{ backgroundImage: `url('${bgImage}')` }}
-  >
-    {/* Contenedor tipo App con scrollbar-none para limpiar la barra gris */}
-    <div className="w-full h-screen max-h-screen sm:h-auto sm:max-h-[90vh] sm:max-w-md bg-slate-950/20 backdrop-blur-md border-0 sm:border border-white/10 sm:rounded-3xl p-4 sm:p-5 shadow-2xl flex flex-col justify-start overflow-y-auto overflow-x-hidden scrollbar-none">
+  <div className="w-full h-screen relative overflow-hidden flex items-center justify-center">
+    {/* Capa de Imagen con Movimiento Cinematic */}
+    <div 
+      className="absolute inset-0 bg-cover bg-center animate-bg-pro transition-all duration-1000"
+      style={{ backgroundImage: `url('${bgImage}')` }}
+    />
+    
+    {/* Capa de Atmósfera (Lluvia, Nubes, etc) */}
+    <div className="absolute inset-0 pointer-events-none z-10">
+      <WeatherAtmosphere />
+    </div>
+
+    {/* Capa de degradado para legibilidad profesional */}
+    <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 pointer-events-none z-20"></div>
+
+    {/* Mascota Viva - Movida al final para asegurar z-index real */}
+    {weather && <Mascota weather={weather} />}
+
+    {/* Contenedor Principal */}
+    <div className="relative w-full h-screen max-h-screen sm:h-auto sm:max-h-[90vh] sm:max-w-lg glass-panel sm:rounded-3xl p-4 sm:p-7 card-shadow flex flex-col justify-start overflow-y-auto overflow-x-hidden scrollbar-none animate-fade-in z-40">
       
-      {/* Todo el resto de tu código de encabezado, Search, WeatherCard, etc., sigue igual acá abajo... */}
-      <header className="mb-3 flex justify-between items-center gap-2 mt-1">
-        <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white drop-shadow-md">
+      <header className="mb-6 flex flex-wrap justify-between items-center gap-4">
+        <h1 className="text-2xl font-black tracking-tighter text-white drop-shadow-xl text-shadow-pro">
           MatyCar Weather <span className="text-cyan-400 font-light text-sm">Pro</span>
         </h1>
         <button 
           onClick={handleLocation}
-          className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold p-2 rounded-xl flex items-center gap-2 transition duration-300 shadow-lg shadow-cyan-500/20 active:scale-95 text-xs"
+          className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold p-2.5 rounded-xl flex items-center gap-2 transition duration-300 shadow-lg shadow-cyan-500/30 active:scale-95 text-xs btn-glow"
         >
-          📍 Mi Ubicación
+          📍
         </button>
       </header>
 
       <Search onSearch={handleSearch} />
 
       {loading && (
-        <div className="text-center my-auto py-8">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-cyan-400 mx-auto mb-3"></div>
-          <p className="text-white text-sm font-medium animate-pulse">Sintonizando satélites...</p>
+        <div className="space-y-4 py-8">
+          <div className="h-48 w-full bg-white/5 animate-pulse rounded-2xl"></div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="h-20 bg-white/5 animate-pulse rounded-xl"></div>
+            <div className="h-20 bg-white/5 animate-pulse rounded-xl"></div>
+          </div>
+          <p className="text-center text-cyan-300 text-xs font-bold uppercase tracking-widest animate-pulse mt-4">Sintonizando satélites...</p>
         </div>
       )}
 
       {error && (
-        <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/50 text-red-200 p-3 rounded-xl text-center my-2 text-xs font-medium">
+        <div className="bg-red-500/10 backdrop-blur-md border border-red-500/30 text-red-200 p-4 rounded-2xl text-center my-2 text-xs font-bold animate-fade-in">
           ⚠️ {error}
         </div>
       )}
 
       {weather && !loading && (
-        <div className="space-y-4 animate-fadeIn flex-1">
-          <WeatherCard current={weather.current} />
-          <Forecast forecastList={weather.rawForecastList || weather.forecast} />
+        <div className="space-y-6 flex-1 animate-fade-in">
+          <WeatherCard current={weather.current} unit={unit} convertTemp={convertTemp} />
+          <Forecast forecastList={weather.rawForecastList || weather.forecast} unit={unit} convertTemp={convertTemp} />
         </div>
       )}
     </div>
+
+    {/* Mascota Viva - Renderizada al final para estar por encima de todo */}
+    {weather && <Mascota weather={weather} />}
   </div>
 );
 }

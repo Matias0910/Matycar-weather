@@ -1,13 +1,107 @@
 @import "tailwindcss";
 
-/* Animación sutil para los fondos y transiciones suaves */
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   transition: background-image 0.5s ease-in-out;
   background-color: #0f172a;
+  color: white;
+  overflow: hidden;
 }
-/* Esconder barra de scroll para Chrome, Safari y Opera */
+
+/* Fondo tipo Video (Zoom + Pan) */
+@keyframes backgroundVideo {
+  0% { transform: scale(1) translateX(0); }
+  50% { transform: scale(1.1) translateX(-2%); }
+  100% { transform: scale(1) translateX(0); }
+}
+
+.animate-bg-pro {
+  animation: backgroundVideo 30s ease-in-out infinite;
+}
+
+/* Animación de la Mascota */
+@keyframes mascotFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes mascotBreath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+/* Animación combinada para que el personaje tenga vida real */
+.animate-mascot-pro {
+  animation: mascotFloat 6s ease-in-out infinite, mascotBreath 4s ease-in-out infinite;
+}
+
+/* Partículas de Lluvia */
+@keyframes rain {
+  from { transform: translateY(-100vh) rotate(15deg); }
+  to { transform: translateY(100vh) rotate(15deg); }
+}
+
+.rain-drop {
+  position: absolute;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.4));
+  width: 2px;
+  height: 80px;
+  pointer-events: none;
+  animation: rain 1s linear infinite;
+}
+
+/* Nubes Flotantes */
+@keyframes drift {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(200%); }
+}
+
+.cloud-mist {
+  position: absolute;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+  animation: drift 60s linear infinite;
+}
+
+/* Brillo Solar */
+@keyframes sunRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Glassmorphism mejorado */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.25);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+/* Animaciones profesionales */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-in {
+  opacity: 0;
+  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Scrollbar minimalista */
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
@@ -16,4 +110,17 @@ body {
 .scrollbar-none {
   -ms-overflow-style: none;  /* IE y Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+/* Efecto de brillo para botones */
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+}
+
+.card-shadow {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.text-shadow-pro {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }

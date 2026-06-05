@@ -12,19 +12,19 @@ function Search({ onSearch }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-6 flex gap-2">
+    <form onSubmit={handleSubmit} className="mb-6 flex gap-2 animate-fade-in" style={{ animationDelay: '0.1s' }}>
       <input
         type="text"
-        placeholder="Buscá una ciudad (ej: Buenos Aires, Madrid)..."
+        placeholder="Buscar ciudad..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        className="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 backdrop-blur-sm transition text-sm sm:text-base font-medium"
+        className="flex-1 bg-white/10 border border-white/10 rounded-2xl px-5 py-3.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 backdrop-blur-md transition-all text-sm font-semibold"
       />
       <button
         type="submit"
-        className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold px-6 py-3 rounded-xl transition duration-300 shadow-md active:scale-95 text-sm sm:text-base"
+        className="bg-gradient-to-br from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black px-6 py-3 rounded-2xl transition-all duration-300 shadow-lg shadow-cyan-500/20 active:scale-95 text-sm btn-glow"
       >
-        🔍 Buscar
+        🔍
       </button>
     </form>
   );
