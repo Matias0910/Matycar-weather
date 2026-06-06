@@ -14,6 +14,8 @@ function Search({ onSearch }) {
   return (
     <form onSubmit={handleSubmit} className="mb-6 flex gap-2 animate-fade-in" style={{ animationDelay: '0.1s' }}>
       <input
+        id="city-search"
+        name="city"
         type="text"
         placeholder="Buscar ciudad..."
         value={input}

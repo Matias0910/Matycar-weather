@@ -4,10 +4,15 @@ const Mascota = ({ weather }) => {
   if (!weather || !weather.current) return null;
 
   const condition = weather.current.weather[0].main;
-  const temp = weather.current.main.temp;
-  const isNight = weather.current.dt < weather.current.sys.sunrise || weather.current.dt > weather.current.sys.sunset;
+  const temp = weather.current.main?.temp || 0;
+  const dt = weather.current.dt;
+  const sunrise = weather.current.sys?.sunrise;
+  const sunset = weather.current.sys?.sunset;
 
-  // Usamos CDN de JSDelivr para asegurar que las imágenes carguen siempre
+  // Lógica de noche más segura
+  const isNight = sunrise && sunset ? (dt < sunrise || dt > sunset) : false;
+
+  // Usamos JSDelivr sobre GitHub que sirve los MIME types correctamente como image/svg+xml
   const mascotBase = "https://cdn.jsdelivr.net/gh/pablostanley/open-doodles@master/svg/";
   let mascotUrl = mascotBase + "reading.svg";
   let message = "¡Qué buen día para programar!";
@@ -30,8 +35,8 @@ const Mascota = ({ weather }) => {
   }
 
   return (
-    <div className="absolute bottom-6 left-6 z-[100] pointer-events-none transition-all duration-1000 animate-fade-in flex flex-col items-center">
-      <div className="bg-white/95 backdrop-blur-md text-slate-900 text-[10px] font-black px-4 py-2 rounded-2xl rounded-bl-none shadow-xl mb-3 animate-bounce border border-white/50 ml-12">
+    <div className="fixed bottom-6 left-6 z-[999] pointer-events-none transition-all duration-1000 animate-fade-in flex flex-col items-center">
+      <div className="bg-white/95 backdrop-blur-md text-slate-900 text-[10px] font-black px-4 py-2 rounded-2xl rounded-bl-none shadow-2xl mb-3 animate-bounce border border-white/50 ml-12">
         {message}
       </div>
 

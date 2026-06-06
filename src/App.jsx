@@ -123,14 +123,11 @@ function App() {
       <WeatherAtmosphere />
     </div>
 
-    {/* Capa de degradado para legibilidad profesional */}
-    <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 pointer-events-none z-20"></div>
-
-    {/* Mascota Viva - Movida al final para asegurar z-index real */}
-    {weather && <Mascota weather={weather} />}
-
     {/* Contenedor Principal */}
     <div className="relative w-full h-screen max-h-screen sm:h-auto sm:max-h-[90vh] sm:max-w-lg glass-panel sm:rounded-3xl p-4 sm:p-7 card-shadow flex flex-col justify-start overflow-y-auto overflow-x-hidden scrollbar-none animate-fade-in z-40">
+
+    {/* Capa de degradado movida para no tapar elementos inferiores */}
+    <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 pointer-events-none z-0"></div>
       
       <header className="mb-6 flex flex-wrap justify-between items-center gap-4">
         <h1 className="text-2xl font-black tracking-tighter text-white drop-shadow-xl text-shadow-pro">
