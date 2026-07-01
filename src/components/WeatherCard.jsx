@@ -1,10 +1,20 @@
 import React from "react";
 
 function WeatherCard({ current, unit, convertTemp }) {
-  const { name, main, weather, wind, sys, visibility } = current;
-  const infoClima = weather[0];
+  const {
+    name = "",
+    main = {},
+    weather = [{ description: "Despejado", icon: "01d" }],
+    wind = {},
+    sys = {},
+    visibility = 0,
+  } = current || {};
+
+  const { speed = 0, deg = 0 } = wind;
+  const infoClima = weather[0] || { description: "Despejado", icon: "01d" };
 
   const formatTime = (timestamp) => {
+    if (!timestamp) return "--:--";
     return new Date(timestamp * 1000).toLocaleTimeString("es-ES", {
       hour: "2-digit",
       minute: "2-digit",
@@ -53,10 +63,10 @@ function WeatherCard({ current, unit, convertTemp }) {
 
         <div className="bg-black/20 p-4 rounded-2xl border border-white/5 flex flex-col items-center">
           <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-2">💨 Viento</p>
-          <p className="text-xl font-black text-teal-400 leading-none">{Math.round(unit === "metric" ? wind.speed * 3.6 : wind.speed)} <span className="text-[10px]">{unit === "metric" ? "km/h" : "mph"}</span></p>
+          <p className="text-xl font-black text-teal-400 leading-none">{Math.round(unit === "metric" ? speed * 3.6 : speed)} <span className="text-[10px]">{unit === "metric" ? "km/h" : "mph"}</span></p>
           <div className="mt-2 text-[10px] flex items-center gap-1 text-slate-400">
-            <span style={{ transform: `rotate(${wind.deg}deg)` }} className="inline-block transition-transform duration-1000">⬆️</span>
-            {wind.deg}°
+            <span style={{ transform: `rotate(${deg}deg)` }} className="inline-block transition-transform duration-1000">⬆️</span>
+            {deg}°
           </div>
         </div>
 

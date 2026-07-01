@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dbeafe" />
+      <stop offset="100%" stop-color="#e0f2fe" />
+    </linearGradient>
+    <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe0c7" />
+      <stop offset="100%" stop-color="#f5c9a5" />
+    </linearGradient>
+    <linearGradient id="hairGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b4252" />
+      <stop offset="100%" stop-color="#1f2937" />
+    </linearGradient>
+    <linearGradient id="shirtGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9" />
+      <stop offset="100%" stop-color="#0c4a6e" />
+    </linearGradient>
+    <linearGradient id="pantsGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e3a8a" />
+      <stop offset="100%" stop-color="#1e40af" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="500" height="500" rx="50" fill="url(#bgGrad)" />
+  <ellipse cx="250" cy="475" rx="170" ry="18" fill="#bfdbfe" opacity="0.45" />
+
+  <circle cx="250" cy="165" r="72" fill="url(#skinGrad)" />
+  <path d="M178 148 C175 108 210 88 250 88 C290 88 325 108 322 148 C320 188 290 208 250 208 C210 208 180 188 178 148 Z" fill="url(#hairGrad)" />
+  <circle cx="225" cy="170" r="13" fill="#1f2937" />
+  <circle cx="275" cy="170" r="13" fill="#1f2937" />
+  <path d="M220 205 C235 220 265 220 280 205" stroke="#1f2937" stroke-width="8" fill="none" stroke-linecap="round" />
+  <path d="M215 148 C235 135 265 135 285 148" stroke="#1f2937" stroke-width="5" fill="none" opacity="0.75" />
+
+  <path d="M178 220 C198 230 220 238 220 260 C220 290 240 300 250 300 C260 300 280 290 280 260 C280 238 302 230 322 220 C325 250 320 310 320 340 C320 370 300 390 280 390 H220 C200 390 180 370 180 340 C180 310 175 250 178 220 Z" fill="url(#shirtGrad)" />
+  <path d="M160 390 C155 390 150 395 150 400 C150 410 155 420 165 420 C175 420 190 410 190 400 C190 390 185 390 180 390 Z" fill="#0f172a" />
+  <path d="M340 390 C345 390 350 395 350 400 C350 410 345 420 335 420 C325 420 310 410 310 400 C310 390 315 390 320 390 Z" fill="#0f172a" />
+  <path d="M210 300 C210 330 210 340 190 385 L175 445 C170 455 172 465 180 470 H210 C218 465 220 455 215 445 L200 385 C195 350 195 325 210 300 Z" fill="url(#pantsGrad)" />
+  <path d="M290 300 C290 330 290 340 310 385 L325 445 C330 455 328 465 320 470 H290 C282 465 280 455 285 445 L300 385 C305 350 305 325 290 300 Z" fill="url(#pantsGrad)" />
+  <path d="M220 240 C200 245 190 270 190 300" stroke="#f8fafc" stroke-width="12" stroke-linecap="round" opacity="0.15" />
+  <path d="M280 240 C300 245 310 270 310 300" stroke="#f8fafc" stroke-width="12" stroke-linecap="round" opacity="0.15" />
+
+  <path d="M240 275 C230 280 215 285 210 295" stroke="#ffffff" stroke-width="8" opacity="0.2" fill="none" />
+  <path d="M260 275 C270 280 285 285 290 295" stroke="#ffffff" stroke-width="8" opacity="0.2" fill="none" />
+
+  <path d="M200 165 C190 170 190 190 200 190" stroke="#ffffff" stroke-width="6" fill="none" opacity="0.75" stroke-linecap="round" />
+  <path d="M300 165 C310 170 310 190 300 190" stroke="#ffffff" stroke-width="6" fill="none" opacity="0.75" stroke-linecap="round" />
+</svg>

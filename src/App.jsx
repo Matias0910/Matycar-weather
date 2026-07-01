@@ -6,11 +6,30 @@ import Mascota from "./components/Mascota";
 import { getWeatherData, getWeatherDataByCoords } from "./services/weatherService";
 
 function App() {
-  const [weather, setWeather] = useState(null);
+  const defaultWeather = {
+    current: {
+      weather: [{ main: "Clear", description: "Despejado", icon: "01d" }],
+      main: { temp: 22, temp_min: 18, temp_max: 26, feels_like: 22, humidity: 60, pressure: 1012 },
+      wind: { speed: 1.5, deg: 120 },
+      visibility: 10000,
+      dt: Math.floor(Date.now() / 1000),
+      sys: {
+        sunrise: Math.floor(Date.now() / 1000) - 3600,
+        sunset: Math.floor(Date.now() / 1000) + 3600,
+      },
+      name: "Buenos Aires",
+    },
+    forecast: [],
+    rawForecastList: [],
+  };
+
+  const [weather, setWeather] = useState(defaultWeather);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [bgImage, setBgImage] = useState("https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1920&q=80"); // Fondo por defecto
   const [unit, setUnit] = useState("metric"); // 'metric' para °C, 'imperial' para °F
+  const [fixedCity, setFixedCity] = useState(null);
+  const [currentCity, setCurrentCity] = useState("");
 
   // Mapeo de fondos según el clima de OpenWeather
   const updateBackground = (mainCondition, dt, sunrise, sunset) => {
@@ -38,18 +57,44 @@ function App() {
     return Math.round((temp * 9/5) + 32);
   };
 
-  const handleSearch = async (city) => {
+  const handleSearch = async (city, options = { persist: true }) => {
+    if (!city) return;
     setLoading(true);
     setError(null);
+    setCurrentCity(city);
+
     try {
       const data = await getWeatherData(city);
       setWeather(data);
       updateBackground(data.current.weather[0].main, data.current.dt, data.current.sys.sunrise, data.current.sys.sunset);
-      localStorage.setItem("lastCity", city); // Guardamos la ciudad
+
+      if (options.persist) {
+        localStorage.setItem("lastCity", city); // Guardamos la ciudad
+      }
+      if (fixedCity === city) {
+        localStorage.setItem("fixedCity", city);
+      }
     } catch (err) {
       setError("No se pudo encontrar la ciudad. ¡Probá de nuevo!");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const toggleFixedCity = () => {
+    if (!currentCity) {
+      setError("Primero busca una ciudad para fijarla.");
+      return;
+    }
+
+    if (fixedCity === currentCity) {
+      setFixedCity(null);
+      localStorage.removeItem("fixedCity");
+      setError("Ciudad fija liberada. Ahora puedes buscar otra ciudad.");
+    } else {
+      setFixedCity(currentCity);
+      localStorage.setItem("fixedCity", currentCity);
+      setError(`Ciudad fija guardada: ${currentCity}`);
     }
   };
 
@@ -72,16 +117,21 @@ function App() {
           }
         },
         () => {
-          // Si falla GPS, intentamos cargar lo último guardado
+          // Si falla GPS, intentamos cargar lo último guardado o un ejemplo
           const savedCity = localStorage.getItem("lastCity");
+          const defaultCity = "Buenos Aires";
           if (savedCity) {
-            handleSearch(savedCity);
+            handleSearch(savedCity, { persist: false });
           } else {
-            setError("Permiso de ubicación denegado. Buscá manualmente.");
+            setError("Permiso de ubicación denegado. Cargando Buenos Aires como ejemplo.");
+            handleSearch(defaultCity, { persist: false });
           }
-          setLoading(false);
         }
       );
+    } else {
+      const defaultCity = "Buenos Aires";
+      setError("Geolocalización no disponible. Cargando Buenos Aires como ejemplo.");
+      handleSearch(defaultCity, { persist: false });
     }
   };
 
@@ -107,7 +157,19 @@ function App() {
   };
 
   useEffect(() => {
-    handleLocation(); // Arranca buscando la ubicación actual del usuario
+    const storedFixedCity = localStorage.getItem("fixedCity");
+    const storedLastCity = localStorage.getItem("lastCity");
+
+    if (storedFixedCity) {
+      setFixedCity(storedFixedCity);
+      setCurrentCity(storedFixedCity);
+      handleSearch(storedFixedCity, { persist: false });
+    } else if (storedLastCity) {
+      setCurrentCity(storedLastCity);
+      handleSearch(storedLastCity, { persist: false });
+    } else {
+      handleLocation(); // Arranca buscando la ubicación actual del usuario
+    }
   }, []);
 
  return (
@@ -130,15 +192,30 @@ function App() {
     <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 pointer-events-none z-0"></div>
       
       <header className="mb-6 flex flex-wrap justify-between items-center gap-4">
-        <h1 className="text-2xl font-black tracking-tighter text-white drop-shadow-xl text-shadow-pro">
-          MatyCar Weather <span className="text-cyan-400 font-light text-sm">Pro</span>
-        </h1>
-        <button 
-          onClick={handleLocation}
-          className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold p-2.5 rounded-xl flex items-center gap-2 transition duration-300 shadow-lg shadow-cyan-500/30 active:scale-95 text-xs btn-glow"
-        >
-          📍
-        </button>
+        <div>
+          <h1 className="text-2xl font-black tracking-tighter text-white drop-shadow-xl text-shadow-pro">
+            MatyCar Weather <span className="text-cyan-400 font-light text-sm">Pro</span>
+          </h1>
+          {fixedCity && (
+            <p className="text-xs text-cyan-200 mt-1">Ciudad fija: <span className="font-bold text-white">{fixedCity}</span></p>
+          )}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <button 
+            onClick={handleLocation}
+            className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold p-2.5 rounded-xl flex items-center gap-2 transition duration-300 shadow-lg shadow-cyan-500/30 active:scale-95 text-xs btn-glow"
+          >
+            📍
+          </button>
+          <button
+            type="button"
+            onClick={toggleFixedCity}
+            className="bg-white/10 hover:bg-white/20 text-white font-bold p-2.5 rounded-xl transition duration-300 border border-white/10 shadow-lg shadow-white/10 active:scale-95 text-xs"
+          >
+            {fixedCity === currentCity ? "Liberar ciudad fija" : "Fijar ciudad actual"}
+          </button>
+        </div>
       </header>
 
       <Search onSearch={handleSearch} />

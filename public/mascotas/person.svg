@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fdae73" />
+      <stop offset="100%" stop-color="#f5a25d" />
+    </linearGradient>
+    <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+  </defs>
+  <circle cx="250" cy="250" r="240" fill="#e0f2fe" />
+  <circle cx="250" cy="160" r="70" fill="url(#skin)" />
+  <path d="M190 190 C190 240 150 260 150 310 L150 360 C150 390 180 410 210 410 H290 C320 410 350 390 350 360 L350 310 C350 260 310 240 310 190 Z" fill="url(#shirt)" />
+  <circle cx="220" cy="150" r="10" fill="#0f172a" />
+  <circle cx="280" cy="150" r="10" fill="#0f172a" />
+  <path d="M220 195 Q250 210 280 195" stroke="#0f172a" stroke-width="10" fill="none" stroke-linecap="round" />
+  <path d="M200 140 Q250 110 300 140" stroke="#0f172a" stroke-width="8" fill="none" stroke-linecap="round" />
+  <path d="M165 320 L110 380" stroke="#0f172a" stroke-width="18" stroke-linecap="round" />
+  <path d="M335 320 L390 380" stroke="#0f172a" stroke-width="18" stroke-linecap="round" />
+  <path d="M190 320 L170 420" stroke="#0f172a" stroke-width="18" stroke-linecap="round" />
+  <path d="M310 320 L330 420" stroke="#0f172a" stroke-width="18" stroke-linecap="round" />
+</svg>

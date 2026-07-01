@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eff6ff" />
+      <stop offset="100%" stop-color="#dbeafe" />
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7d5b7" />
+      <stop offset="100%" stop-color="#deb18a" />
+    </linearGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1f2937" />
+      <stop offset="100%" stop-color="#111827" />
+    </linearGradient>
+    <linearGradient id="jacket" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="pants" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#0f172a" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <rect width="320" height="400" rx="40" fill="url(#bg)" />
+  <ellipse cx="160" cy="378" rx="118" ry="18" fill="#cbd5e1" opacity="0.35" filter="url(#softShadow)" />
+
+  <path d="M110 118 C110 78 140 48 160 48 C180 48 210 78 210 118 C210 158 180 188 160 188 C140 188 110 158 110 118 Z" fill="url(#hair)" />
+  <ellipse cx="160" cy="140" rx="58" ry="70" fill="url(#skin)" />
+
+  <circle cx="145" cy="148" r="8" fill="#0f172a" />
+  <circle cx="175" cy="148" r="8" fill="#0f172a" />
+  <path d="M145 175 C155 185 165 185 175 175" stroke="#0f172a" stroke-width="8" fill="none" stroke-linecap="round" />
+  <path d="M146 125 C154 117 166 117 174 125" stroke="#0f172a" stroke-width="4" fill="none" />
+
+  <path d="M95 184 C95 222 98 240 110 262 C116 274 124 288 130 300 C136 314 146 340 150 360 H170 C174 340 184 314 190 300 C196 288 204 274 210 262 C222 240 225 222 225 184 C225 166 225 148 210 140 C198 134 178 130 160 130 C142 130 122 134 110 140 C95 148 95 166 95 184 Z" fill="url(#jacket)" />
+  <path d="M120 276 C118 292 118 308 120 326" stroke="#ffffff" stroke-width="10" opacity="0.1" stroke-linecap="round" />
+  <path d="M200 276 C202 292 202 308 200 326" stroke="#ffffff" stroke-width="10" opacity="0.1" stroke-linecap="round" />
+  <path d="M118 360 C114 380 112 395 116 400 H204 C208 395 206 380 202 360 H118 Z" fill="url(#pants)" opacity="0.18" />
+
+  <path d="M130 260 C135 285 138 300 140 315" stroke="#0f172a" stroke-width="12" opacity="0.08" stroke-linecap="round" />
+  <path d="M210 260 C205 285 202 300 200 315" stroke="#0f172a" stroke-width="12" opacity="0.08" stroke-linecap="round" />
+
+  <path d="M108 160 C112 190 128 208 160 208 C192 208 208 190 212 160" fill="#ffffff" opacity="0.28" />
+  <path d="M210 210 C200 240 185 270 175 300" stroke="#ffffff" stroke-width="12" opacity="0.12" stroke-linecap="round" />
+  <path d="M110 210 C120 240 135 270 145 300" stroke="#ffffff" stroke-width="12" opacity="0.12" stroke-linecap="round" />
+
+  <path d="M100 150 C90 160 92 190 100 198" stroke="#f8fafc" stroke-width="8" opacity="0.14" stroke-linecap="round" />
+  <path d="M220 150 C230 160 228 190 220 198" stroke="#f8fafc" stroke-width="8" opacity="0.14" stroke-linecap="round" />
+</svg>

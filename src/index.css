@@ -31,9 +31,29 @@ body {
   50% { transform: scale(1.02); }
 }
 
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  50% { transform: rotate(-2deg); }
+  75% { transform: rotate(1deg); }
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
 /* Animación combinada para que el personaje tenga vida real */
 .animate-mascot-pro {
   animation: mascotFloat 6s ease-in-out infinite, mascotBreath 4s ease-in-out infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 4s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: floatIcon 3s ease-in-out infinite;
 }
 
 /* Partículas de Lluvia */

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="umbrellaTop" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="umbrellaStick" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#94a3b8" />
+    </linearGradient>
+  </defs>
+  <path d="M20 90 C40 30 160 30 180 90 Q100 40 20 90" fill="url(#umbrellaTop)" stroke="#0369a1" stroke-width="6" />
+  <path d="M100 90 L100 155" stroke="url(#umbrellaStick)" stroke-width="12" stroke-linecap="round" />
+  <path d="M100 155 C100 170 90 180 80 190" stroke="#475569" stroke-width="12" fill="none" stroke-linecap="round" />
+  <path d="M30 85 C50 110 80 110 100 90" fill="#7dd3fc" opacity="0.55" />
+  <path d="M170 85 C150 110 120 110 100 90" fill="#7dd3fc" opacity="0.55" />
+</svg>
